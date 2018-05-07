@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--debug="true"表示会输出日志的状态信息相当于代码里手动设置StatusPrinter.print(lc)-->
+<!--scan="true"扫描配置文件的变化并自动重新配置-->
+<!--scanPeriod="30 seconds"自动扫描周期 若没有写时间单位则默认为毫秒-->
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+
+    <property name="USER_HOME" value="F:/logs"/>
+
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${USER_HOME}//scorpio-log-${bySecond}.log</file>
+        <!--false清空现存文件-->
+        <append>false</append>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--根据窗口大小来指定滚动策略-->
+    <appender name="ROLLFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${USER_HOME}//scorpio-roll.log</file>
+        <!--滚动策略1：根据窗口大小(文件大小)来指定滚动策略-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
+        <!--<fileNamePattern>${USER_HOME}//scorpio-roll-%i.log.zip</fileNamePattern>-->
+        <!--<minIndex>1</minIndex>-->
+        <!--<maxIndex>3</maxIndex>-->
+        <!--</rollingPolicy>-->
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+        <!--<maxFileSize>10KB</maxFileSize>-->
+        <!--</triggeringPolicy>-->
+        <!--滚动策略2：根据时间来制定滚动策略-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--<fileNamePattern>${USER_HOME}//scorpio-roll.%d{yyyy-MM-dd_HH-mm}.log</fileNamePattern>-->
+        <!--<maxHistory>3</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--滚动策略3： 根据时间和大小制定滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}//scorpio-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--将dao里面的日志即sql语句打印到file文件additivity="false"表示记录输出仅仅只会在当前appender里面不会到别的logger里面-->
+    <!--<logger name="com.gao.scorpio.dao" additivity="false">-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--<appender-ref ref="ROLLFILE"/>-->
+    <!--</logger>-->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="ROLLFILE"/>-->
+    </root>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+</configuration>
