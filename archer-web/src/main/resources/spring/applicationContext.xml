@@ -12,10 +12,10 @@
 
     <import resource="spring-mvc.xml"/>
     <!--<import resource="spring_quartz.xml"/>-->
-    <import resource="mq.xml"/>
+    <!--<import resource="mq.xml"/>-->
     <import resource="applicationContext-transaction.xml"/>
     <import resource="classpath*:applicationContext-dataSource.xml"/>
     <import resource="classpath*:applicationContext-mybatis.xml"/>
-    <import resource="rpc-provider.xml"/>
+    <!--<import resource="rpc-provider.xml"/>-->
     <!--<import resource="dubbo-provider.xml"/>-->
 </beans>
