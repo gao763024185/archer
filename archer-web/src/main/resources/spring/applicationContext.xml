@@ -18,4 +18,5 @@
     <import resource="classpath*:applicationContext-mybatis.xml"/>
     <import resource="rpc-provider.xml"/>
     <!--<import resource="dubbo-provider.xml"/>-->
+    <import resource="thread-config.xml"/>
 </beans>

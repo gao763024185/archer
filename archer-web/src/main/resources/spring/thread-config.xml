@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 配置线程池 -->
+    <!--<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">-->
+    <!--&lt;!&ndash; 线程池维护线程的最少数量 &ndash;&gt;-->
+    <!--<property name="corePoolSize" value="5"/>-->
+    <!--&lt;!&ndash; 线程池维护线程所允许的空闲时间 &ndash;&gt;-->
+    <!--<property name="keepAliveSeconds" value="30000"/>-->
+    <!--&lt;!&ndash; 线程池维护线程的最大数量 &ndash;&gt;-->
+    <!--<property name="maxPoolSize" value="1000"/>-->
+    <!--&lt;!&ndash; 线程池所使用的缓冲队列 &ndash;&gt;-->
+    <!--<property name="queueCapacity" value="200"/>-->
+    <!--</bean>-->
+
+
+    <!--使用@Asycn注解-->
+    <!--调用者和异步方法在同一个类中，添加@Async注解是失效的，原因是当你在同一个类中的时候，方法调用是在类体内执行的，spring无法截获这个方法调用-->
+
+    <!-- 定时器配置
+        task:executor/@pool-size：可以指定执行线程池的初始大小、最大大小
+        task:executor/@queue-capacity：等待执行的任务队列的容量
+        task:executor/@rejection-policy：当等待队已满时的策略，分为丢弃、由任务执行器直接运行等方式
+     -->
+    <task:scheduler id="scheduler" pool-size="10"/>
+    <task:executor id="executor" keep-alive="3600" pool-size="100-200" queue-capacity="500"
+                   rejection-policy="CALLER_RUNS"/>
+    <task:annotation-driven executor="executor" scheduler="scheduler"/>
+</beans>
